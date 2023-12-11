@@ -62,6 +62,20 @@ def receive_data():
         font = ("Arial", font_number)
         canvas.create_text(x0, y0, fill=color, font=font, text=text)
 
+    def draw_timer(seconds, color):
+        degrees = int(360 / seconds)
+        current_degrees = 0
+        canvas.create_oval(100, 100, 500, 500, outline=color)
+        for i in range(seconds + 1):
+            canvas.delete("timer_arc")
+            canvas.create_arc(100, 100, 500, 500, start=90, extent=-current_degrees, outline="", fill=color,
+                              tags="timer_arc")
+            root.update()
+            time.sleep(1)
+            current_degrees += degrees
+            if current_degrees == 360:
+                canvas.create_oval(100, 100, 500, 500, fill=color)
+
     while True:
         data, client_address = server_socket.recvfrom(1024)
         command = data.decode('utf-8')
